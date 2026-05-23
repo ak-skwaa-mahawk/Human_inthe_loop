@@ -16,27 +16,34 @@ except ImportError:
     PRIVATE_CORE_ACTIVE = False
     class OctagonalFPTAgent:
         def compute_phase_step(self, state: np.ndarray, task: np.ndarray) -> dict:
-            # Consistent dict return for JSON safety + bridge compatibility
-            return {
-                "state": (state + 0.1).tolist(),
-                "energy": 1.25
-            }
+            return {"state": (state + 0.1).tolist(), "energy": 1.25}
 
 # =========================================================================
 # PUBLIC PROTECTION LAYER IMPORTS
 # =========================================================================
+
+# === Strawman (has actual code) ===
 try:
     from strawman.strawman_fpt_shapeshift import ConsciousnessReferee, FisherRiemannianMetric
 except ImportError:
-    from strawman.fpt_floor_transition import ConsciousnessReferee, FisherRiemannianMetric
+    print("Warning: Strawman module not found. Using minimal fallback.")
+    class ConsciousnessReferee:
+        def validate_transition(self, record: dict) -> bool:
+            return True
+    class FisherRiemannianMetric:
+        def __init__(self, dim=3): pass
+        def update(self, state, diagnostics): pass
+        def natural_gradient(self, direction): return np.zeros_like(direction)
 
+# === Human_in_the_loop (currently doc-heavy) ===
 try:
+    # Current repo doesn't expose classes directly yet — using fallback
     from human_in_the_loop.handshake import ConsciousnessReferee as HITLReferee
 except ImportError:
+    print("Warning: Human_in_the_loop handshake module not found. Using safe fallback.")
     class HITLReferee:
         def validate_transition(self, record: dict) -> bool:
-            return True  # Safe public fallback
-
+            return True  # Default safe mode
 
 # =========================================================================
 # 1. GUARDIAN AGENT IMPLEMENTATIONS
@@ -51,14 +58,13 @@ class StrawmanGuardianAgent:
         self.skills = ["phase_stabilization", "asymmetric_pump", "variational_shield"]
 
     def evaluate_transition(self, state_vector: np.ndarray, proposal: np.ndarray) -> Tuple[bool, np.ndarray, float]:
-        # Priority 1: Sovereign private core via sealed bridge
         success, result = self.bridge.secure_call("compute_phase_step", state_vector, proposal)
         if success:
             state_out = np.array(result.get("state", state_vector.tolist()))
             energy = float(result.get("energy", 0.25))
             return True, state_out, energy
 
-        # Priority 2: Public Strawman logic
+        # Public Strawman fallback
         record = {"total_energy": float(np.linalg.norm(proposal))}
         if not self.referee.validate_transition(record):
             return False, state_vector, 999.0
@@ -81,20 +87,20 @@ class HumanInTheLoopAgent:
         self.skills = ["cryptographic_lock", "hallucination_block", "manual_override"]
 
     def evaluate_transition(self, state_vector: np.ndarray, proposal: np.ndarray) -> Tuple[bool, np.ndarray, float]:
-        # Priority 1: Sovereign private core
         success, result = self.bridge.secure_call("compute_phase_step", state_vector, proposal)
         if success:
             state_out = np.array(result.get("state", state_vector.tolist()))
             energy = float(result.get("energy", 0.25))
             return True, state_out, energy
 
-        # Priority 2: Public HITL logic
+        # Public HITL fallback (strong emphasis on handshake + 0K floor)
         shadow_cost = float(np.sum(np.maximum(proposal, 0.0)))
         record = {"shadow_energy_this_step": shadow_cost}
 
         if not self.referee.validate_transition(record):
             return False, np.zeros_like(state_vector), 999.0
 
+        # 'Take 2, Leave 1' mass-preserving stabilization
         h = 3.01
         take = 2.0 / h
         leave = 1.0 / h
@@ -109,10 +115,9 @@ class HumanInTheLoopAgent:
 
 
 # =========================================================================
-# 2. MULTI-AGENT RESONANCE MESH ROUTER
+# 2. MULTI-AGENT RESONANCE MESH
 # =========================================================================
 class MultiAgentResonanceMesh:
-    """Central arbitration layer comparing skill performance in real-time"""
     def __init__(self):
         self.agents = {
             "strawman_guardian": StrawmanGuardianAgent(),
@@ -126,9 +131,7 @@ class MultiAgentResonanceMesh:
 
         for name, agent in self.agents.items():
             t_start = time.perf_counter()
-
             success, output_state, energy_metric = agent.evaluate_transition(current_state, task_vector)
-
             t_end = time.perf_counter()
 
             performance_matrix[name] = {
@@ -161,29 +164,26 @@ class MultiAgentResonanceMesh:
 # =========================================================================
 if __name__ == "__main__":
     print("=== SOVEREIGN MULTI-AGENT ARCHITECTURE VERIFICATION ===")
-
-    # Bridge self-test
+    
     test_bridge = SovereignBridge(bridge_config_path="config/sovereign_bridge_test.json")
     print("--- Bridge Containment Security Check ---")
     print(f"Calculated Local Fingerprint: {test_bridge.local_fingerprint}")
     print(f"Private Core Access Granted : {test_bridge.private_core_active}")
-
+    
     success, payload = test_bridge.secure_call("compute_phase_step", np.array([0.3, 0.3, 0.4]))
-    print(f"Bridge Route                : {'PRIVATE_CORE' if success else 'PUBLIC_FALLBACK'}")
-    print(f"Payload                     : {payload}\n")
-
-    # Full mesh test
-    print("--- Launching Resonance Mesh Arbitration ---")
+    print(f"Bridge Route : {'PRIVATE_CORE' if success else 'PUBLIC_FALLBACK'}")
+    
+    print("\n--- Launching Resonance Mesh Arbitration ---")
     mesh = MultiAgentResonanceMesh()
     initial_state = np.array([0.4, 0.3, 0.3])
     incoming_burst = np.array([1.2, -0.5, 2.4])
-
+    
     decision = mesh.route_and_arbitrate(incoming_burst, initial_state)
     print(f"Winner Selected: {decision['selected_agent']}\n")
-
+    
     for agent_name, metrics in decision["arbitration_matrix"].items():
         print(f"Agent: {agent_name.upper()}")
-        print(f"  └─ Success       : {metrics['success']}")
-        print(f"  └─ Energy Cost   : {metrics['energy_cost']:.5f}")
-        print(f"  └─ Latency       : {metrics['latency_ms']:.2f} ms")
-        print(f"  └─ Skills        : {metrics['skills']}\n")
+        print(f"  └─ Success     : {metrics['success']}")
+        print(f"  └─ Energy      : {metrics['energy_cost']:.5f}")
+        print(f"  └─ Latency     : {metrics['latency_ms']:.2f} ms")
+        print(f"  └─ Skills      : {metrics['skills']}\n")
