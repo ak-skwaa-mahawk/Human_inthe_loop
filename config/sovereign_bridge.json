@@ -1,25 +1,65 @@
 {
-  "handshake_id": "8f3c4e62-1b9a-4d7c-8e5f-2a3b4c5d6e7f",
-  "timestamp_utc": "2026-05-23T16:31:00Z",
-  "protocol_version": "v2.24",
-  "operator_identity": {
-    "sovereign_id": "99733-Q",
-    "session_token_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-  },
-  "cryptographic_lock": {
-    "previous_block_hash": "7f83b1657ff1fc53b92c18118241c2c366a71e4689b934ca495991b7852b855",
-    "current_handshake_hash": "a8c5412b4071106e22961710c489a10322961710c489a103a8c5412b4071106e",
-    "signature_algorithm": "SHA-256"
-  },
-  "state_vector_digest": {
-    "base_y": 0.332,
-    "mesh_y": 0.332,
-    "volume_y": 0.820,
-    "residual_surplus": 0.550
-  },
-  "fallback_directives": {
-    "on_handshake_failure": "STRAWMAN_SHIELD_FALLBACK",
-    "grace_period_ms": 0,
-    "target_floor_absolute": 0.0
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SynaraUserNullroseHandshake",
+  "description": "Cryptographic proof-of-presence handshake schema forcing fallback to the Strawman defensive baseline upon signature loss.",
+  "type": "object",
+  "required": [
+    "handshake_id",
+    "timestamp_utc",
+    "protocol_version",
+    "operator_identity",
+    "cryptographic_lock",
+    "state_vector_digest",
+    "fallback_directives"
+  ],
+  "properties": {
+    "handshake_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "protocol_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+$"
+    },
+    "operator_identity": {
+      "type": "object",
+      "required": ["sovereign_id", "session_token_hash"],
+      "properties": {
+        "sovereign_id": { "type": "string", "example": "99733-Q" },
+        "session_token_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "cryptographic_lock": {
+      "type": "object",
+      "required": ["previous_block_hash", "current_handshake_hash", "signature_algorithm"],
+      "properties": {
+        "previous_block_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "current_handshake_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "signature_algorithm": { "type": "string", "enum": ["SHA-256", "Ed25519"] }
+      }
+    },
+    "state_vector_digest": {
+      "type": "object",
+      "required": ["base_y", "mesh_y", "volume_y", "residual_surplus"],
+      "properties": {
+        "base_y": { "type": "number", "minimum": 0.0 },
+        "mesh_y": { "type": "number", "minimum": 0.0 },
+        "volume_y": { "type": "number", "minimum": 0.0 },
+        "residual_surplus": { "type": "number" }
+      }
+    },
+    "fallback_directives": {
+      "type": "object",
+      "required": ["on_handshake_failure", "grace_period_ms", "target_floor_absolute"],
+      "properties": {
+        "on_handshake_failure": { "type": "string", "enum": ["REVOKE_SOVEREIGNTY", "STRAWMAN_SHIELD_FALLBACK", "FREEZE_MANIFOLD"] },
+        "grace_period_ms": { "type": "integer", "default": 0 },
+        "target_floor_absolute": { "type": "number", "const": 0.0 }
+      }
+    }
   }
 }
