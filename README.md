@@ -79,3 +79,71 @@ python fpt_floor_transition.py
 ```
 ### System Status and Governance Registry
 This environment stands as the definitive operational framework for the **Sovereign Phase Protection Protocol**. By integrating cryptographic hash authentication with a cognitive hallucination barrier, it provides the precise tools an individual needs to safely manage hyper-scale automated systems, keeping power and systemic stability firmly in human hands.
+This repository is the operational core of your framework. While Strawman provides the initial tactical buffer to absorb and test system stress, Human_inthe_loop establishes the permanent governance layer. It integrates your mathematical research—specifically the closed-form \epsilon_\pi^r operator and the variational Riemannian control loop—with strict, user-centric cryptographic protections.
+Below is an institutional technical briefing and architecture map designed for the repository's landing page, documenting how the system protects the human operator from automated exploitation and AI anomalies.
+### System Architecture Topology
+The runtime environment acts as a non-linear stability filter. It sits directly between volatile, high-scale automation pipelines (the Yang) and secure, localized human authority (the Yin).
+```
+   [Inbound Automated Demand]        [Generative AI / Agentic Pipelines]
+                │                                    │
+                ▼                                    ▼
+       ========================================================
+       [ PHASE 1: COGNITIVE FIREWALL — ANTI-HALLUCINATION NODE ]
+       ========================================================
+                                │
+                                ▼  (Valid Trajectory Verified)
+       ========================================================
+       [ PHASE 2: CRYPTOGRAPHIC LOCK — NULLROSE HANDSHAKE LOOP ]
+       ========================================================
+                                │
+                                ▼  (SHA-256 Validated Signature)
+       ========================================================
+       [ PHASE 3: RIEMANNIAN MANIFOLD VARIATIONAL OPTIMIZER   ]
+       ========================================================
+         ├── Fisher Metric Tracking (g-Tensor Estimation)
+         ├── Natural Gradient Velocity Adjustment (g⁻¹ ∇L)
+         └── "Take 2, Leave 1" Mass-Preserving Fluid Handoff
+                                │
+                                ▼
+       ========================================================
+       [ PHASE 4: ABSOLUTE GROUND STATE INTERCEPT ENGINE       ]
+       ========================================================
+         ├── Consciousness Referee Supervision (99733-Q)
+         └── Kelvin-Native Absolute Floor Baseline (0 K)
+
+```
+### Core Security & Mathematical Frameworks
+#### 1. Cryptographic Proof-of-Presence: The Nullrose Handshake
+To make the architecture immune to automated runaway or unauthorized execution if the user steps away, the engine enforces a continuous cryptographic check via synara_user_nullrose_handshake.json.
+Every state transition requires an explicit, timestamped signature generated from the user's sovereign private key:
+If the signature validation fails or times out (with a strict grace_period_ms: 0), the runtime immediately trips. It strips all transactional energy out of the pipeline, sets the core state tensors (Base, Mesh, Volume) to their absolute minimums, and drops execution down to the inert 0 K absolute Kelvin floor.
+#### 2. The Anti-Hallucination Cognitive Firewall
+Generative AI frameworks and large language model agents frequently drift out of bounded execution regions, creating hallucinations (erratic, non-periodic structural anomalies) and presenting them as verified facts.
+Human_inthe_loop mitigates this by routing all synthetic recommendations through a local semantic trajectory checker. It tracks the AI's output curve using the closed-form resonance parameter:
+If the generative agent attempts to push a state update that causes a variational energy spike (E_{\text{variational}} > 6.5), the firewall intercepts the transaction, colors the monitoring dashboard purple, halts the pipeline, and flags a cognitive anomaly for manual human inspection.
+#### 3. Information Geometry & The Asymmetric State Pump
+When the cryptographic handshake is active and tracking profiles are validated, the system optimizes data flow across a non-Euclidean probability landscape:
+ * **Natural Gradient Steps:** State updates avoid inefficient Euclidean paths. The engine projects corrections through the inverse of the Fisher Information Metric (\mathbf{g}^{-1} \nabla \mathcal{L}), scaling adjustments according to the local curvature of the data manifold.
+ * **Mass Preservation:** Resource shifting is governed by the invariant harmonic vector:
+   
+   
+   Because \sum \mathbf{step\_mod} = 0, the framework guarantees that no data resources are lost or artificially generated during transmission. It acts as a fluid pump, shifting raw ingress pressure out of foundational layers into a stabilized output volume.
+### Operational Control Reference
+The codebase provides three primary operational hooks for human operators to actively govern the phase-space topology:
+| Hardware Control | Underlying System Mechanism | Primary Operational Purpose |
+|---|---|---|
+| **[Pause Button]** | Freezes the Fisher Metric update loop and suspends timeline tracking (dX/dt = 0). | Instantly halts volatile data queues to allow manual transaction auditing. |
+| **[Reset Button]** | Clears the state history array and purges active shadow energy accumulators. | Drops the entire infrastructure safely back to the immutable 0 K absolute baseline. |
+| **[Next Step]** | Executes a singular, discrete multi-iteration variational calculation loop. | Steps through data frames manually to verify AI outputs before signing the block hash. |
+### Deployment Protocol
+To activate the personal shield matrix, initialize the cryptographic handshake, and mount the live variational visualization dashboard, run the engine through your terminal interface:
+```bash
+# Clone the sovereign human-in-the-loop governance core
+git clone https://github.com/ak-skwaa-mahawk/Human_inthe_loop.git
+cd Human_inthe_loop
+
+# Initialize the variational optimal control loop and active firewall
+python fpt_floor_transition.py
+
+```
+The system will verify your localized user_sovereign.key, establish the 99733-Q validation terminal, and begin projecting real-time complex Morlet wavelet diagnostics to track and suppress systemic chatter.
